@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -18,6 +19,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -29,7 +32,7 @@ import java.net.URL
 
 val ZenixYellow = Color(0xFFFFD700)
 val ZenixBlack = Color(0xFF0B0B0B)
-val ZenixCard = Color(0xFF1A1A1A)
+val ZenixCard = Color(0xE61A1A1A)
 
 data class McVersion(val id: String, val type: String)
 
@@ -113,16 +116,28 @@ fun HomeScreen() {
     }
     val shown = versions.filter { showSnapshots || it.type == "release" }
 
-    Box(
-        Modifier
-            .fillMaxSize()
-            .background(
-                Brush.radialGradient(
-                    colors = listOf(Color(0xFF3A2F00), ZenixBlack),
-                    radius = 1100f
+    Box(Modifier.fillMaxSize().background(ZenixBlack)) {
+
+        // Fon rasm (tiniq)
+        Image(
+            painter = painterResource(R.drawable.zenix_bg),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize()
+        )
+        // Faqat pastki qismi qorong'i, tepasi tiniq
+        Box(
+            Modifier.fillMaxSize().background(
+                Brush.verticalGradient(
+                    colors = listOf(
+                        Color(0x00000000),
+                        Color(0x00000000),
+                        Color(0xCC000000)
+                    )
                 )
             )
-    ) {
+        )
+
         Column(Modifier.fillMaxSize().padding(20.dp)) {
 
             Row(
@@ -145,10 +160,15 @@ fun HomeScreen() {
                         Text("Player", color = Color.White, fontWeight = FontWeight.Bold)
                     }
                 }
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Box(Modifier.size(8.dp).clip(CircleShape).background(Color(0xFF2ECC71)))
-                    Spacer(Modifier.width(6.dp))
-                    Text("Renderer Auto", color = Color.Gray, fontSize = 12.sp)
+                Surface(shape = RoundedCornerShape(50), color = ZenixCard) {
+                    Row(
+                        Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Box(Modifier.size(8.dp).clip(CircleShape).background(Color(0xFF2ECC71)))
+                        Spacer(Modifier.width(6.dp))
+                        Text("Renderer Auto", color = Color.LightGray, fontSize = 12.sp)
+                    }
                 }
             }
 
@@ -160,10 +180,10 @@ fun HomeScreen() {
                     color = ZenixYellow,
                     fontSize = 64.sp,
                     fontWeight = FontWeight.Black,
-                    shadow = Shadow(color = ZenixYellow, blurRadius = 40f)
+                    shadow = Shadow(color = Color.Black, blurRadius = 24f)
                 )
             )
-            Text("Minecraft Launcher", color = Color.Gray, fontSize = 14.sp)
+            Text("Zenix Launcher", color = Color.LightGray, fontSize = 14.sp)
 
             Spacer(Modifier.height(24.dp))
 
